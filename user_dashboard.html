@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="StockVision User Dashboard - Run predictions and analyze stock trends.">
+  <title>Dashboard - StockVision</title>
+  <link rel="stylesheet" href="assets/css/main.css">
+  <link rel="stylesheet" href="assets/css/dashboard.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body data-theme="light">
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="index.html" class="navbar-brand">
+        <span class="navbar-brand-icon">SV</span>
+        <span>StockVision</span>
+      </a>
+      
+      <div class="navbar-menu">
+        <div class="navbar-links">
+          <a href="index.html">Home</a>
+          <a href="about.html">About</a>
+          <a href="user_dashboard.html" class="active">Dashboard</a>
+          <a href="contact.html">Contact</a>
+        </div>
+        <div class="navbar-actions">
+          <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
+            <span class="icon-sun">☀️</span>
+            <span class="icon-moon">🌙</span>
+          </button>
+          <a href="#" class="btn btn-secondary btn-sm">Profile</a>
+          <a href="login.html" class="btn btn-outline btn-sm">Logout</a>
+        </div>
+      </div>
+      
+      <button class="navbar-toggle" aria-label="Toggle navigation">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </nav>
+
+  <main class="dashboard">
+    <div class="container">
+      <!-- Dashboard Header -->
+      <div class="dashboard-header fade-in">
+        <h1 class="dashboard-title">Your StockVision Dashboard</h1>
+        <p class="dashboard-subtitle">Welcome back, <strong>[UserName]</strong>! Ready to explore predictions?</p>
+      </div>
+
+      <!-- Metrics Grid -->
+      <div class="metrics-grid">
+        <div class="card metric-card fade-in">
+          <div class="metric-icon blue">📊</div>
+          <div class="metric-content">
+            <div class="metric-value" data-counter="47">0</div>
+            <div class="metric-label">Total Predictions</div>
+          </div>
+        </div>
+        <div class="card metric-card fade-in">
+          <div class="metric-icon green">📈</div>
+          <div class="metric-content">
+            <div class="metric-value">RELIANCE</div>
+            <div class="metric-label">Last Used Stock</div>
+          </div>
+        </div>
+        <div class="card metric-card fade-in">
+          <div class="metric-icon purple">🕐</div>
+          <div class="metric-content">
+            <div class="metric-value">Today</div>
+            <div class="metric-label">Last Login</div>
+          </div>
+        </div>
+        <div class="card metric-card fade-in">
+          <div class="metric-icon orange">🎯</div>
+          <div class="metric-content">
+            <div class="metric-value">Medium</div>
+            <div class="metric-label">Avg Confidence</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Prediction Controls -->
+      <div class="dashboard-panels">
+        <div class="card dashboard-panel panel-full fade-in">
+          <div class="panel-header">
+            <h3 class="panel-title">Run Prediction</h3>
+          </div>
+          <form id="prediction-form" class="prediction-controls">
+            <div class="form-group">
+              <label class="form-label" for="stock-select">Stock Symbol</label>
+              <select id="stock-select" name="stock_id" class="form-select" required>
+                <optgroup label="Indian Stocks - IT & Tech">
+                  <option value="1">TCS (Tata Consultancy)</option>
+                  <option value="2">INFY (Infosys)</option>
+                  <option value="15">WIPRO (Wipro)</option>
+                  <option value="16">HCLTECH (HCL Technologies)</option>
+                  <option value="41">TECHM (Tech Mahindra)</option>
+                  <option value="42">LTIM (LTIMindtree)</option>
+                  <option value="43">PERSISTENT (Persistent Systems)</option>
+                  <option value="44">COFORGE (Coforge)</option>
+                </optgroup>
+                <optgroup label="Indian Stocks - Banking & Finance">
+                  <option value="6">HDFCBANK (HDFC Bank)</option>
+                  <option value="7">ICICIBANK (ICICI Bank)</option>
+                  <option value="8">SBIN (State Bank of India)</option>
+                  <option value="12">KOTAKBANK (Kotak Mahindra Bank)</option>
+                  <option value="14">AXISBANK (Axis Bank)</option>
+                  <option value="20">BAJFINANCE (Bajaj Finance)</option>
+                  <option value="45">BAJAJFINSV (Bajaj Finserv)</option>
+                  <option value="46">HDFCLIFE (HDFC Life)</option>
+                  <option value="47">SBILIFE (SBI Life Insurance)</option>
+                  <option value="48">ICICIGI (ICICI Lombard)</option>
+                </optgroup>
+                <optgroup label="Indian Stocks - Energy & Infrastructure">
+                  <option value="3" selected>RELIANCE (Reliance Industries)</option>
+                  <option value="23">POWERGRID (Power Grid Corp)</option>
+                  <option value="24">NTPC (NTPC Limited)</option>
+                  <option value="25">ONGC (Oil & Natural Gas Corp)</option>
+                  <option value="13">LT (Larsen & Toubro)</option>
+                  <option value="49">ADANIGREEN (Adani Green Energy)</option>
+                  <option value="50">ADANIPORTS (Adani Ports)</option>
+                  <option value="22">ADANIENT (Adani Enterprises)</option>
+                  <option value="51">BPCL (Bharat Petroleum)</option>
+                  <option value="52">IOC (Indian Oil Corp)</option>
+                  <option value="53">GAIL (GAIL India)</option>
+                  <option value="54">COALINDIA (Coal India)</option>
+                </optgroup>
+                <optgroup label="Indian Stocks - Consumer & Retail">
+                  <option value="9">HINDUNILVR (Hindustan Unilever)</option>
+                  <option value="10">ITC (ITC Limited)</option>
+                  <option value="21">TITAN (Titan Company)</option>
+                  <option value="55">ASIANPAINT (Asian Paints)</option>
+                  <option value="56">NESTLEIND (Nestle India)</option>
+                  <option value="57">BRITANNIA (Britannia Industries)</option>
+                  <option value="58">DABUR (Dabur India)</option>
+                  <option value="59">MARICO (Marico)</option>
+                  <option value="60">TATACONSUM (Tata Consumer)</option>
+                  <option value="61">DMART (Avenue Supermarts)</option>
+                </optgroup>
+                <optgroup label="Indian Stocks - Auto & Telecom">
+                  <option value="17">MARUTI (Maruti Suzuki)</option>
+                  <option value="18">TATAMOTORS (Tata Motors)</option>
+                  <option value="11">BHARTIARTL (Bharti Airtel)</option>
+                  <option value="62">M&M (Mahindra & Mahindra)</option>
+                  <option value="63">HEROMOTOCO (Hero MotoCorp)</option>
+                  <option value="64">BAJAJ-AUTO (Bajaj Auto)</option>
+                  <option value="65">EICHERMOT (Eicher Motors)</option>
+                  <option value="66">TVSMOTOR (TVS Motor)</option>
+                  <option value="67">ASHOKLEY (Ashok Leyland)</option>
+                </optgroup>
+                <optgroup label="Indian Stocks - Pharma & Healthcare">
+                  <option value="19">SUNPHARMA (Sun Pharmaceutical)</option>
+                  <option value="68">DRREDDY (Dr. Reddy's Labs)</option>
+                  <option value="69">CIPLA (Cipla)</option>
+                  <option value="70">DIVISLAB (Divi's Laboratories)</option>
+                  <option value="71">APOLLOHOSP (Apollo Hospitals)</option>
+                  <option value="72">FORTIS (Fortis Healthcare)</option>
+                </optgroup>
+                <optgroup label="Indian Stocks - Metals & Mining">
+                  <option value="73">TATASTEEL (Tata Steel)</option>
+                  <option value="74">JSWSTEEL (JSW Steel)</option>
+                  <option value="75">HINDALCO (Hindalco Industries)</option>
+                  <option value="76">VEDL (Vedanta)</option>
+                  <option value="77">NMDC (NMDC Limited)</option>
+                </optgroup>
+                <optgroup label="US Stocks - Tech Giants (FAANG+)">
+                  <option value="4">AAPL (Apple Inc.)</option>
+                  <option value="5">GOOGL (Alphabet Inc.)</option>
+                  <option value="26">MSFT (Microsoft)</option>
+                  <option value="27">AMZN (Amazon)</option>
+                  <option value="29">META (Meta Platforms)</option>
+                  <option value="31">NFLX (Netflix)</option>
+                  <option value="30">NVDA (NVIDIA)</option>
+                  <option value="28">TSLA (Tesla)</option>
+                </optgroup>
+                <optgroup label="US Stocks - Technology">
+                  <option value="39">INTC (Intel)</option>
+                  <option value="40">AMD (Advanced Micro Devices)</option>
+                  <option value="78">CRM (Salesforce)</option>
+                  <option value="79">ORCL (Oracle)</option>
+                  <option value="80">ADBE (Adobe)</option>
+                  <option value="81">CSCO (Cisco Systems)</option>
+                  <option value="82">IBM (IBM)</option>
+                  <option value="83">QCOM (Qualcomm)</option>
+                  <option value="84">NOW (ServiceNow)</option>
+                  <option value="85">SNOW (Snowflake)</option>
+                  <option value="86">PLTR (Palantir)</option>
+                  <option value="87">UBER (Uber Technologies)</option>
+                  <option value="88">ABNB (Airbnb)</option>
+                  <option value="89">SQ (Block Inc.)</option>
+                  <option value="90">SHOP (Shopify)</option>
+                </optgroup>
+                <optgroup label="US Stocks - Finance & Banking">
+                  <option value="32">JPM (JPMorgan Chase)</option>
+                  <option value="33">V (Visa)</option>
+                  <option value="38">PYPL (PayPal)</option>
+                  <option value="91">BAC (Bank of America)</option>
+                  <option value="92">WFC (Wells Fargo)</option>
+                  <option value="93">GS (Goldman Sachs)</option>
+                  <option value="94">MS (Morgan Stanley)</option>
+                  <option value="95">MA (Mastercard)</option>
+                  <option value="96">AXP (American Express)</option>
+                  <option value="97">BLK (BlackRock)</option>
+                </optgroup>
+                <optgroup label="US Stocks - Consumer & Retail">
+                  <option value="35">WMT (Walmart)</option>
+                  <option value="36">PG (Procter & Gamble)</option>
+                  <option value="37">DIS (Walt Disney)</option>
+                  <option value="34">JNJ (Johnson & Johnson)</option>
+                  <option value="98">KO (Coca-Cola)</option>
+                  <option value="99">PEP (PepsiCo)</option>
+                  <option value="100">MCD (McDonald's)</option>
+                  <option value="101">SBUX (Starbucks)</option>
+                  <option value="102">NKE (Nike)</option>
+                  <option value="103">COST (Costco)</option>
+                  <option value="104">TGT (Target)</option>
+                  <option value="105">HD (Home Depot)</option>
+                </optgroup>
+                <optgroup label="US Stocks - Healthcare & Pharma">
+                  <option value="106">UNH (UnitedHealth)</option>
+                  <option value="107">PFE (Pfizer)</option>
+                  <option value="108">MRNA (Moderna)</option>
+                  <option value="109">LLY (Eli Lilly)</option>
+                  <option value="110">ABBV (AbbVie)</option>
+                  <option value="111">MRK (Merck)</option>
+                  <option value="112">TMO (Thermo Fisher)</option>
+                </optgroup>
+                <optgroup label="US Stocks - Energy & Industrial">
+                  <option value="113">XOM (Exxon Mobil)</option>
+                  <option value="114">CVX (Chevron)</option>
+                  <option value="115">BA (Boeing)</option>
+                  <option value="116">CAT (Caterpillar)</option>
+                  <option value="117">GE (General Electric)</option>
+                  <option value="118">HON (Honeywell)</option>
+                  <option value="119">UPS (United Parcel Service)</option>
+                </optgroup>
+                <optgroup label="UK & European Stocks">
+                  <option value="120">BP (BP plc - UK)</option>
+                  <option value="121">SHEL (Shell plc - UK)</option>
+                  <option value="122">HSBA (HSBC Holdings - UK)</option>
+                  <option value="123">VOD (Vodafone - UK)</option>
+                  <option value="124">AZN (AstraZeneca - UK)</option>
+                  <option value="125">GSK (GSK plc - UK)</option>
+                  <option value="126">NESN (Nestle - Swiss)</option>
+                  <option value="127">SAP (SAP SE - Germany)</option>
+                  <option value="128">ASML (ASML Holdings - Netherlands)</option>
+                  <option value="129">TTE (TotalEnergies - France)</option>
+                  <option value="130">OR (L'Oreal - France)</option>
+                </optgroup>
+                <optgroup label="Crypto-Related Stocks">
+                  <option value="131">COIN (Coinbase)</option>
+                  <option value="132">MARA (Marathon Digital)</option>
+                  <option value="133">RIOT (Riot Platforms)</option>
+                  <option value="134">MSTR (MicroStrategy)</option>
+                  <option value="135">HUT (Hut 8 Mining)</option>
+                </optgroup>
+                <optgroup label="ETFs & Index Funds">
+                  <option value="136">SPY (S&P 500 ETF)</option>
+                  <option value="137">QQQ (Nasdaq 100 ETF)</option>
+                  <option value="138">DIA (Dow Jones ETF)</option>
+                  <option value="139">IWM (Russell 2000 ETF)</option>
+                  <option value="140">VTI (Total Stock Market ETF)</option>
+                  <option value="141">NIFTYBEES (Nifty 50 ETF - India)</option>
+                  <option value="142">BANKBEES (Bank Nifty ETF - India)</option>
+                </optgroup>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="start-date">Start Date</label>
+              <input type="date" id="start-date" name="start_date" class="form-input" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="end-date">End Date</label>
+              <input type="date" id="end-date" name="end_date" class="form-input" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Model Type</label>
+              <div class="form-radio-group">
+                <label class="form-radio">
+                  <input type="radio" name="model" value="linear" checked>
+                  <span>Linear Regression</span>
+                </label>
+                <label class="form-radio">
+                  <input type="radio" name="model" value="lstm">
+                  <span>LSTM</span>
+                </label>
+                <label class="form-radio">
+                  <input type="radio" name="model" value="both">
+                  <span>Both</span>
+                </label>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary btn-lg" style="grid-column: span 4; margin-top: 1rem;">
+              Run Prediction
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Price Alerts Section -->
+      <div class="dashboard-panels">
+        <div class="card dashboard-panel panel-full fade-in">
+          <div class="panel-header">
+            <h3 class="panel-title">Price Alerts</h3>
+            <span class="status-badge" id="notification-status">Notifications Disabled</span>
+          </div>
+          <div class="alert-controls-wrapper" style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+            <!-- Alert Form -->
+            <form id="alert-form" class="prediction-controls">
+              <div class="form-group">
+                <label class="form-label" for="alert-stock-select">Stock Symbol</label>
+                <select id="alert-stock-select" class="form-select" required>
+                  <optgroup label="Indian Stocks - IT & Tech">
+                    <option value="TCS">TCS</option>
+                    <option value="INFY">INFY</option>
+                    <option value="WIPRO">WIPRO</option>
+                    <option value="HCLTECH">HCLTECH</option>
+                  </optgroup>
+                  <optgroup label="Indian Stocks - Banking">
+                    <option value="HDFCBANK">HDFCBANK</option>
+                    <option value="ICICIBANK">ICICIBANK</option>
+                    <option value="SBIN">SBIN</option>
+                  </optgroup>
+                  <optgroup label="Indian Stocks - Energy">
+                    <option value="RELIANCE" selected>RELIANCE</option>
+                    <option value="ONGC">ONGC</option>
+                    <option value="NTPC">NTPC</option>
+                  </optgroup>
+                  <optgroup label="US Stocks - Tech">
+                    <option value="AAPL">AAPL</option>
+                    <option value="GOOGL">GOOGL</option>
+                    <option value="MSFT">MSFT</option>
+                    <option value="AMZN">AMZN</option>
+                    <option value="TSLA">TSLA</option>
+                  </optgroup>
+                </select>
+              </div>
+              
+              <div class="form-group">
+                <label class="form-label" for="alert-high">High Price (₹)</label>
+                <input type="number" id="alert-high" class="form-input" placeholder="e.g. 3500" step="0.01">
+              </div>
+              
+              <div class="form-group">
+                <label class="form-label" for="alert-low">Low Price (₹)</label>
+                <input type="number" id="alert-low" class="form-input" placeholder="e.g. 2800" step="0.01">
+              </div>
+
+              <button type="submit" class="btn btn-secondary" style="grid-column: span 2; margin-top: 1rem;">
+                Set Alert
+              </button>
+            </form>
+            
+            <!-- Active Alerts List -->
+            <div class="active-alerts">
+              <h4 style="margin-bottom: 1rem; color: var(--text-primary);">Active Alerts</h4>
+              <div id="dashboard-alerts-list">
+                <p class="text-secondary">No alerts set.</p>
+              </div>
+              <p class="text-secondary" style="font-size: 0.85rem; margin-top: 1rem;">
+                💡 Alerts trigger browser notifications and SMS (if configured). 
+                <a href="profile.html" style="color: var(--primary-color);">Add your phone number</a> for SMS alerts.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chart Section -->
+      <div class="dashboard-panels">
+        <div class="card dashboard-panel panel-full fade-in">
+          <div class="panel-header">
+            <h3 class="panel-title">Price Chart</h3>
+            <span class="status-badge active">Live Preview</span>
+          </div>
+          <div class="chart-container">
+            <canvas id="priceChart"></canvas>
+          </div>
+          
+          <!-- Metrics Summary -->
+          <div class="metrics-summary">
+            <div class="summary-item">
+              <div class="summary-value" id="metric-mae">12.45</div>
+              <div class="summary-label">MAE</div>
+            </div>
+            <div class="summary-item">
+              <div class="summary-value" id="metric-rmse">18.72</div>
+              <div class="summary-label">RMSE</div>
+            </div>
+            <div class="summary-item positive">
+              <div class="summary-value" id="metric-trend">Upward</div>
+              <div class="summary-label">Trend</div>
+            </div>
+            <div class="summary-item">
+              <div class="summary-value" id="metric-confidence">Medium</div>
+              <div class="summary-label">Confidence</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <span>📊</span>
+          <span>StockVision</span>
+        </div>
+        <p class="footer-copyright">© 2024 StockVision. All rights reserved.</p>
+        <p class="footer-disclaimer">
+          StockVision is an educational stock price prediction demo platform. 
+          It is designed for learning purposes only and should not be used for real trading or investment decisions.
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/main.js"></script>
+  <script src="assets/js/user_dashboard.js"></script>
+</body>
+</html>

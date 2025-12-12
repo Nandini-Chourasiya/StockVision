@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="StockVision - An educational stock price prediction platform using machine learning models like Linear Regression and LSTM.">
+  <title>StockVision - Stock Price Predictor Platform</title>
+  <link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body data-theme="light">
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="index.html" class="navbar-brand">
+        <span class="navbar-brand-icon">SV</span>
+        <span>StockVision</span>
+      </a>
+      
+      <div class="navbar-menu">
+        <div class="navbar-links">
+          <a href="index.html" class="active">Home</a>
+          <a href="about.html">About</a>
+          <a href="user_dashboard.html">Dashboard</a>
+          <a href="contact.html">Contact</a>
+        </div>
+        <div class="navbar-actions">
+          <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
+            <span class="icon-sun">☀️</span>
+            <span class="icon-moon">🌙</span>
+          </button>
+          <a href="login.html" class="btn btn-secondary btn-sm">Login</a>
+          <a href="register.html" class="btn btn-primary btn-sm">Register</a>
+        </div>
+      </div>
+      
+      <button class="navbar-toggle" aria-label="Toggle navigation">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </nav>
+
+  <main>
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="hero-background"></div>
+      <div class="hero-shapes">
+        <div class="hero-shape"></div>
+        <div class="hero-shape"></div>
+        <div class="hero-shape"></div>
+      </div>
+      
+      <div class="container">
+        <div class="hero-content">
+          <div class="hero-text fade-in-up">
+            <h1>See Stock Trends with <span class="text-gradient">Machine Learning</span></h1>
+            <p class="hero-subtitle">
+              StockVision helps students and retail investors visually explore historical versus predicted 
+              stock prices using Linear Regression and LSTM models. This is an educational tool designed 
+              for learning and experimentation, not real trading decisions.
+            </p>
+            <div class="hero-buttons">
+              <a href="register.html" class="btn btn-primary btn-lg">Get Started</a>
+              <a href="login.html" class="btn btn-secondary btn-lg">Login</a>
+            </div>
+            <p class="hero-link">
+              Already curious? <a href="user_dashboard.html">Explore Dashboard Demo</a>
+            </p>
+          </div>
+          
+          <div class="hero-visual fade-in-up delay-2">
+            <div class="hero-chart-preview">
+              <div class="hero-chart-header">
+                <span class="hero-chart-title">RELIANCE.NS</span>
+                <span class="hero-chart-badge">+2.4% Predicted</span>
+              </div>
+              <div class="hero-chart-graph">
+                <div class="hero-chart-line"></div>
+                <div class="hero-chart-line hero-chart-line-predicted"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Parallax Section -->
+    <section class="parallax-section">
+      <div class="parallax-background"></div>
+      <div class="container">
+        <div class="parallax-content">
+          <div class="parallax-cards">
+            <div class="parallax-card fade-in">
+              <div class="parallax-card-icon">📚</div>
+              <h3>Educational Focus</h3>
+              <p>Built for students and researchers to understand how ML models approach stock prediction without any financial risk.</p>
+            </div>
+            <div class="parallax-card fade-in">
+              <div class="parallax-card-icon">⚖️</div>
+              <h3>Compare Models</h3>
+              <p>See how Linear Regression and LSTM perform side by side on the same data, understanding their strengths and limitations.</p>
+            </div>
+            <div class="parallax-card fade-in">
+              <div class="parallax-card-icon">📊</div>
+              <h3>Visual Insights</h3>
+              <p>Get clear visualizations with confidence bands and error metrics—insights for learning, not trading signals.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features-section section">
+      <div class="container">
+        <div class="section-header fade-in">
+          <h2>Platform Features</h2>
+          <p>Everything you need to explore, learn, and understand stock price prediction models.</p>
+        </div>
+        
+        <div class="features-grid">
+          <div class="card feature-card fade-in">
+            <div class="card-icon primary">📈</div>
+            <h3>Interactive Charts</h3>
+            <p>Dynamic line charts that display historical prices alongside model predictions in an intuitive format.</p>
+          </div>
+          <div class="card feature-card fade-in">
+            <div class="card-icon secondary">🤖</div>
+            <h3>Linear Regression vs LSTM</h3>
+            <p>Compare traditional statistical methods with deep learning approaches on the same dataset.</p>
+          </div>
+          <div class="card feature-card fade-in">
+            <div class="card-icon primary">📉</div>
+            <h3>Confidence & Metrics</h3>
+            <p>View MAE, RMSE, and confidence levels to understand prediction accuracy and reliability.</p>
+          </div>
+          <div class="card feature-card fade-in">
+            <div class="card-icon secondary">🔐</div>
+            <h3>Admin Analytics</h3>
+            <p>Track user activity, model usage patterns, and platform statistics through an admin dashboard.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Timeline Section -->
+    <section class="timeline-section section">
+      <div class="container">
+        <div class="section-header fade-in">
+          <h2>How It Works</h2>
+          <p>A simplified overview of the prediction pipeline behind StockVision.</p>
+        </div>
+        
+        <div class="timeline">
+          <div class="timeline-item fade-in">
+            <div class="timeline-number">1</div>
+            <h4>Data Collection</h4>
+            <p>Historical stock prices are gathered from reliable sources for the selected ticker symbols.</p>
+          </div>
+          <div class="timeline-item fade-in">
+            <div class="timeline-number">2</div>
+            <h4>Feature Engineering</h4>
+            <p>Raw data is transformed into meaningful features like moving averages and price changes.</p>
+          </div>
+          <div class="timeline-item fade-in">
+            <div class="timeline-number">3</div>
+            <h4>Model Training</h4>
+            <p>Linear Regression and LSTM models learn patterns from the prepared historical data.</p>
+          </div>
+          <div class="timeline-item fade-in">
+            <div class="timeline-number">4</div>
+            <h4>Prediction</h4>
+            <p>Trained models generate forecasts for future price movements based on recent trends.</p>
+          </div>
+          <div class="timeline-item fade-in">
+            <div class="timeline-number">5</div>
+            <h4>Visualization</h4>
+            <p>Results are displayed as interactive charts with error metrics for easy interpretation.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq-section section">
+      <div class="container">
+        <div class="section-header fade-in">
+          <h2>Frequently Asked Questions</h2>
+          <p>Common questions about StockVision and its purpose.</p>
+        </div>
+        
+        <div class="faq-grid">
+          <div class="card faq-item fade-in">
+            <h4>Is this for real trading?</h4>
+            <p>No. StockVision is purely educational. It demonstrates how ML models approach stock prediction but should never be used for actual investment decisions.</p>
+          </div>
+          <div class="card faq-item fade-in">
+            <h4>How accurate are the predictions?</h4>
+            <p>Accuracy varies significantly. The platform shows error metrics so you can see how well models perform—this is for learning, not guaranteed results.</p>
+          </div>
+          <div class="card faq-item fade-in">
+            <h4>What stocks can I analyze?</h4>
+            <p>The demo includes popular stocks like TCS, INFY, RELIANCE, AAPL, and GOOGL. The backend can be extended to support more symbols.</p>
+          </div>
+          <div class="card faq-item fade-in">
+            <h4>Who is this platform for?</h4>
+            <p>Students working on ML projects, researchers exploring time series analysis, and anyone curious about how prediction algorithms work.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <span>📊</span>
+          <span>StockVision</span>
+        </div>
+        <p class="footer-copyright">© 2024 StockVision. All rights reserved.</p>
+        <p class="footer-disclaimer">
+          StockVision is an educational stock price prediction demo platform. 
+          It is designed for learning purposes only and should not be used for real trading or investment decisions.
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/main.js"></script>
+</body>
+</html>

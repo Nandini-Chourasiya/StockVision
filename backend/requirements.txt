@@ -1,0 +1,24 @@
+# StockVision Backend Dependencies
+
+# Core Flask
+Flask>=2.3.0
+Flask-SQLAlchemy>=3.0.0
+Flask-Login>=0.6.0
+Werkzeug>=2.3.0
+
+# Database
+psycopg2-binary>=2.9.0
+
+# ML/Data
+numpy>=1.24.0
+pandas>=2.0.0
+scikit-learn>=1.3.0
+python-dateutil>=2.8.0
+yfinance>=0.2.0
+
+# Notifications
+twilio>=8.0.0
+pywebpush>=1.14.0
+
+# Production Server
+gunicorn>=21.0.0
