@@ -187,17 +187,21 @@ def admin_dashboard():
     
     model_usage_data = {m[0]: m[1] for m in model_usage}
     
-    # User signups over time (last 30 days)
+    # User signups over time (current month only - December 2025)
+    today = datetime.utcnow().date()
+    first_day_of_month = today.replace(day=1)
     signups_by_day = []
-    for i in range(29, -1, -1):
-        day = datetime.utcnow().date() - timedelta(days=i)
+    
+    current_day = first_day_of_month
+    while current_day <= today:
         count = User.query.filter(
-            func.date(User.created_at) == day
+            func.date(User.created_at) == current_day
         ).count()
         signups_by_day.append({
-            'date': day.strftime('%b %d'),
+            'date': current_day.strftime('%b %d'),
             'count': count
         })
+        current_day += timedelta(days=1)
     
     return render_template('admin_dashboard.html',
         user=user,
