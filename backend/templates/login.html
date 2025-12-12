@@ -3,60 +3,255 @@
 {% block description %}Login to StockVision - Access your stock prediction dashboard.{% endblock %}
 {% block title %}Login - StockVision{% endblock %}
 
+{% block extra_css %}
+<style>
+  /* Role Selection Screen Styles */
+  .role-selection {
+    text-align: center;
+  }
+  
+  .role-cards {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin: 2rem 0;
+    flex-wrap: nowrap;
+  }
+  
+  .role-card {
+    background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
+    border: 2px solid rgba(255,255,255,0.1);
+    border-radius: 16px;
+    padding: 1.5rem 1rem;
+    width: 140px;
+    min-width: 120px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    color: inherit;
+  }
+  
+  .role-card:hover {
+    transform: translateY(-8px);
+    border-color: var(--primary-color, #6c5ce7);
+    box-shadow: 0 20px 40px rgba(108, 92, 231, 0.3);
+  }
+  
+  .role-card.user-card:hover {
+    border-color: #00b894;
+    box-shadow: 0 20px 40px rgba(0, 184, 148, 0.3);
+  }
+  
+  .role-card.admin-card:hover {
+    border-color: #e17055;
+    box-shadow: 0 20px 40px rgba(225, 112, 85, 0.3);
+  }
+  
+  .role-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    display: block;
+  }
+  
+  .role-card h3 {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.25rem;
+  }
+  
+  .role-card p {
+    margin: 0;
+    font-size: 0.85rem;
+    opacity: 0.7;
+  }
+  
+  /* Login Form (Initially Hidden) */
+  .login-form-section {
+    display: none;
+  }
+  
+  .login-form-section.active {
+    display: block;
+    animation: fadeInUp 0.4s ease;
+  }
+  
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .back-button {
+    background: transparent;
+    border: none;
+    color: var(--primary-color, #6c5ce7);
+    cursor: pointer;
+    font-size: 0.95rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    padding: 0.5rem 0;
+    transition: opacity 0.2s ease;
+  }
+  
+  .back-button:hover {
+    opacity: 0.8;
+  }
+  
+  .role-badge {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+  
+  .role-badge.user {
+    background: rgba(0, 184, 148, 0.2);
+    color: #00b894;
+  }
+  
+  .role-badge.admin {
+    background: rgba(225, 112, 85, 0.2);
+    color: #e17055;
+  }
+</style>
+{% endblock %}
+
 {% block content %}
 <main class="auth-page">
-  <div class="container">
+  <div class="container" style="display: flex; justify-content: center; align-items: center; width: 100%;">
     <div class="card auth-card fade-in-up">
-      <div class="auth-header">
-        <h1>Welcome Back</h1>
-        <p>Sign in to access your StockVision dashboard</p>
-      </div>
       
-      <form class="auth-form" method="POST" action="{{ url_for('auth.login', next=request.args.get('next')) }}">
-        <div class="form-group">
-          <label class="form-label" for="email">Email Address</label>
-          <input 
-            type="email" 
-            id="email" 
-            name="email" 
-            class="form-input" 
-            placeholder="you@example.com" 
-            required
-            autocomplete="email"
-          >
+      <!-- Role Selection Screen -->
+      <div id="roleSelection" class="role-selection">
+        <div class="auth-header">
+          <h1>Welcome to StockVision</h1>
+          <p>Choose how you'd like to sign in</p>
         </div>
         
-        <div class="form-group">
-          <label class="form-label" for="password">Password</label>
-          <input 
-            type="password" 
-            id="password" 
-            name="password" 
-            class="form-input" 
-            placeholder="Enter your password" 
-            required
-            autocomplete="current-password"
-            minlength="6"
-          >
+        <div class="role-cards">
+          <div class="role-card user-card" onclick="selectRole('user')">
+            <span class="role-icon">👤</span>
+            <h3>User</h3>
+            <p>Access predictions & dashboard</p>
+          </div>
+          
+          <div class="role-card admin-card" onclick="selectRole('admin')">
+            <span class="role-icon">🛡️</span>
+            <h3>Admin</h3>
+            <p>Manage users & platform</p>
+          </div>
         </div>
         
-        <button type="submit" class="btn btn-primary btn-lg">Sign In</button>
-      </form>
-      
-      <div class="auth-footer">
-        <p>New here? <a href="{{ url_for('auth.register') }}">Create an account</a></p>
-        <p style="margin-top: 10px; font-size: 0.9em;">
-          <strong>Demo Accounts:</strong><br>
-          Admin: admin@stockvision.com / admin123<br>
-          User: user@stockvision.com / user123
-        </p>
+        <div class="auth-footer" style="margin-top: 1rem;">
+          <p>New here? <a href="{{ url_for('auth.register') }}">Create an account</a></p>
+        </div>
       </div>
       
-      <div class="auth-disclaimer">
-        By continuing you acknowledge that StockVision is an educational tool 
-        and not a trading platform. Predictions are for learning purposes only.
+      <!-- Login Form (Hidden Initially) -->
+      <div id="loginForm" class="login-form-section">
+        <button type="button" class="back-button" onclick="goBack()">
+          ← Back to role selection
+        </button>
+        
+        <div class="auth-header">
+          <span id="roleBadge" class="role-badge"></span>
+          <h1>Sign In</h1>
+          <p id="loginSubtitle">Enter your credentials</p>
+        </div>
+        
+        <form class="auth-form" method="POST" action="{{ url_for('auth.login', next=request.args.get('next')) }}">
+          <input type="hidden" name="selected_role" id="selectedRole" value="">
+          
+          <div class="form-group">
+            <label class="form-label" for="email">Email Address</label>
+            <input 
+              type="email" 
+              id="email" 
+              name="email" 
+              class="form-input" 
+              placeholder="you@example.com" 
+              required
+              autocomplete="email"
+            >
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label" for="password">Password</label>
+            <input 
+              type="password" 
+              id="password" 
+              name="password" 
+              class="form-input" 
+              placeholder="Enter your password" 
+              required
+              autocomplete="current-password"
+              minlength="6"
+            >
+          </div>
+          
+          <button type="submit" class="btn btn-primary btn-lg">Sign In</button>
+        </form>
+        
+        <div class="auth-footer">
+          <p>New here? <a href="{{ url_for('auth.register') }}">Create an account</a></p>
+          <p id="demoCredentials" style="margin-top: 10px; font-size: 0.9em;"></p>
+        </div>
+        
+        <div class="auth-disclaimer">
+          By continuing you acknowledge that StockVision is an educational tool 
+          and not a trading platform. Predictions are for learning purposes only.
+        </div>
       </div>
+      
     </div>
   </div>
 </main>
+
+<script>
+  function selectRole(role) {
+    const roleSelection = document.getElementById('roleSelection');
+    const loginForm = document.getElementById('loginForm');
+    const roleBadge = document.getElementById('roleBadge');
+    const loginSubtitle = document.getElementById('loginSubtitle');
+    const demoCredentials = document.getElementById('demoCredentials');
+    const selectedRoleInput = document.getElementById('selectedRole');
+    const emailInput = document.getElementById('email');
+    
+    selectedRoleInput.value = role;
+    
+    if (role === 'admin') {
+      roleBadge.textContent = 'Admin Login';
+      roleBadge.className = 'role-badge admin';
+      loginSubtitle.textContent = 'Sign in to manage the platform';
+      demoCredentials.innerHTML = '<strong>Demo Admin:</strong><br>admin@stockvision.com / admin123';
+      emailInput.placeholder = 'admin@example.com';
+    } else {
+      roleBadge.textContent = 'User Login';
+      roleBadge.className = 'role-badge user';
+      loginSubtitle.textContent = 'Sign in to access your dashboard';
+      demoCredentials.innerHTML = '<strong>Demo User:</strong><br>user@stockvision.com / user123';
+      emailInput.placeholder = 'you@example.com';
+    }
+    
+    roleSelection.style.display = 'none';
+    loginForm.classList.add('active');
+    emailInput.focus();
+  }
+  
+  function goBack() {
+    const roleSelection = document.getElementById('roleSelection');
+    const loginForm = document.getElementById('loginForm');
+    
+    loginForm.classList.remove('active');
+    roleSelection.style.display = 'block';
+  }
+</script>
 {% endblock %}
