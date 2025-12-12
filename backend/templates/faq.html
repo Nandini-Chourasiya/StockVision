@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block description %}StockVision FAQ - Common questions about our stock prediction platform.{% endblock %}
+{% block title %}FAQ - StockVision{% endblock %}
+
+{% block content %}
+<section class="section">
+  <div class="container">
+    <div class="section-header fade-in">
+      <h2>Frequently Asked Questions</h2>
+      <p>Common questions about StockVision and its purpose.</p>
+    </div>
+    
+    <div class="faq-grid">
+      <div class="card faq-item fade-in">
+        <h4>Is this for real trading?</h4>
+        <p>No. StockVision is purely educational. It demonstrates how ML models approach stock prediction but should never be used for actual investment decisions.</p>
+      </div>
+      <div class="card faq-item fade-in">
+        <h4>How accurate are the predictions?</h4>
+        <p>Accuracy varies significantly. The platform shows error metrics so you can see how well models perform—this is for learning, not guaranteed results.</p>
+      </div>
+      <div class="card faq-item fade-in">
+        <h4>What stocks can I analyze?</h4>
+        <p>The demo includes popular stocks like TCS, INFY, RELIANCE, AAPL, and GOOGL. The backend can be extended to support more symbols.</p>
+      </div>
+      <div class="card faq-item fade-in">
+        <h4>Who is this platform for?</h4>
+        <p>Students working on ML projects, researchers exploring time series analysis, and anyone curious about how prediction algorithms work.</p>
+      </div>
+      <div class="card faq-item fade-in">
+        <h4>How are predictions generated?</h4>
+        <p>We use two models: a Linear Regression model for identifying trends and an LSTM-style approach for capturing complex patterns. All data is synthetic for this demo.</p>
+      </div>
+      <div class="card faq-item fade-in">
+        <h4>Is my data secure?</h4>
+        <p>Yes. We use industry-standard password hashing and secure session management. Your personal data is never shared.</p>
+      </div>
+    </div>
+    
+    <div style="text-align: center; margin-top: 3rem;">
+      <p>Still have questions?</p>
+      <a href="{{ url_for('contact') }}" class="btn btn-secondary">Contact Us</a>
+    </div>
+  </div>
+</section>
+{% endblock %}

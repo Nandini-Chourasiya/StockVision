@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block description %}Login to StockVision - Access your stock prediction dashboard.{% endblock %}
+{% block title %}Login - StockVision{% endblock %}
+
+{% block content %}
+<main class="auth-page">
+  <div class="container">
+    <div class="card auth-card fade-in-up">
+      <div class="auth-header">
+        <h1>Welcome Back</h1>
+        <p>Sign in to access your StockVision dashboard</p>
+      </div>
+      
+      <form class="auth-form" method="POST" action="{{ url_for('auth.login', next=request.args.get('next')) }}">
+        <div class="form-group">
+          <label class="form-label" for="email">Email Address</label>
+          <input 
+            type="email" 
+            id="email" 
+            name="email" 
+            class="form-input" 
+            placeholder="you@example.com" 
+            required
+            autocomplete="email"
+          >
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label" for="password">Password</label>
+          <input 
+            type="password" 
+            id="password" 
+            name="password" 
+            class="form-input" 
+            placeholder="Enter your password" 
+            required
+            autocomplete="current-password"
+            minlength="6"
+          >
+        </div>
+        
+        <button type="submit" class="btn btn-primary btn-lg">Sign In</button>
+      </form>
+      
+      <div class="auth-footer">
+        <p>New here? <a href="{{ url_for('auth.register') }}">Create an account</a></p>
+        <p style="margin-top: 10px; font-size: 0.9em;">
+          <strong>Demo Accounts:</strong><br>
+          Admin: admin@stockvision.com / admin123<br>
+          User: user@stockvision.com / user123
+        </p>
+      </div>
+      
+      <div class="auth-disclaimer">
+        By continuing you acknowledge that StockVision is an educational tool 
+        and not a trading platform. Predictions are for learning purposes only.
+      </div>
+    </div>
+  </div>
+</main>
+{% endblock %}

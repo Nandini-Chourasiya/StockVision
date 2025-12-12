@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Learn about StockVision's machine learning models - Linear Regression and LSTM for stock price prediction.">
+  <title>About - StockVision</title>
+  <link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body data-theme="light">
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="index.html" class="navbar-brand">
+        <span class="navbar-brand-icon">SV</span>
+        <span>StockVision</span>
+      </a>
+      
+      <div class="navbar-menu">
+        <div class="navbar-links">
+          <a href="index.html">Home</a>
+          <a href="about.html" class="active">About</a>
+          <a href="user_dashboard.html">Dashboard</a>
+          <a href="contact.html">Contact</a>
+        </div>
+        <div class="navbar-actions">
+          <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
+            <span class="icon-sun">☀️</span>
+            <span class="icon-moon">🌙</span>
+          </button>
+          <a href="login.html" class="btn btn-secondary btn-sm">Login</a>
+          <a href="register.html" class="btn btn-primary btn-sm">Register</a>
+        </div>
+      </div>
+      
+      <button class="navbar-toggle" aria-label="Toggle navigation">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </nav>
+
+  <main>
+    <!-- About Intro -->
+    <section class="about-intro section">
+      <div class="container">
+        <h1 class="fade-in-up">Learn How StockVision <span class="text-gradient">Thinks</span> About Stock Prices</h1>
+        <p class="fade-in-up delay-1">
+          Stock price prediction is one of the most challenging problems in machine learning. Prices are influenced 
+          by countless factors—market sentiment, global events, company performance, and random fluctuations that 
+          even the best models cannot fully capture.
+        </p>
+        <p class="fade-in-up delay-2">
+          StockVision does not claim to solve this problem. Instead, it provides a transparent, educational window 
+          into how two popular approaches—Linear Regression and LSTM neural networks—attempt to find patterns in 
+          historical price data. By comparing their outputs, you can develop intuition about the strengths and 
+          weaknesses of each method.
+        </p>
+        <p class="fade-in-up delay-3">
+          This platform is built for curiosity and learning. It shows you what these models see, how they behave, 
+          and why their predictions should always be treated with healthy skepticism.
+        </p>
+      </div>
+    </section>
+
+    <!-- Model Overview -->
+    <section class="section">
+      <div class="container">
+        <div class="section-header fade-in">
+          <h2>Understanding the Models</h2>
+          <p>Two different approaches to the same challenge—finding patterns in price data.</p>
+        </div>
+        
+        <div class="model-cards">
+          <div class="card model-card fade-in">
+            <h3>📏 Linear Regression</h3>
+            <p>
+              Linear Regression is a foundational statistical method that fits a straight line through your data. 
+              It looks for a simple relationship between input features (like past prices or trading volume) and 
+              the target (future price).
+            </p>
+            <ul>
+              <li>Easy to interpret—you can see exactly how each feature affects predictions</li>
+              <li>Fast to train and requires minimal computational resources</li>
+              <li>Works well when relationships in data are roughly linear</li>
+              <li>Struggles with complex, non-linear patterns in volatile markets</li>
+              <li>Best suited for identifying general trends rather than precise daily predictions</li>
+            </ul>
+          </div>
+          
+          <div class="card model-card fade-in">
+            <h3>🧠 LSTM (Long Short-Term Memory)</h3>
+            <p>
+              LSTM is a type of recurrent neural network specifically designed for sequential data. It can 
+              "remember" patterns across time, making it popular for time series like stock prices where 
+              past values influence future ones.
+            </p>
+            <ul>
+              <li>Captures temporal dependencies that simpler models miss</li>
+              <li>Can learn complex, non-linear relationships automatically</li>
+              <li>Requires more data and computational power to train effectively</li>
+              <li>Harder to interpret—understanding why it makes certain predictions is difficult</li>
+              <li>Prone to overfitting if not carefully tuned with proper validation</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Process Timeline -->
+    <section class="timeline-section section">
+      <div class="container">
+        <div class="section-header fade-in">
+          <h2>The Prediction Pipeline</h2>
+          <p>From raw data to visual insights—here's how StockVision processes information.</p>
+        </div>
+        
+        <div class="timeline">
+          <div class="timeline-item fade-in">
+            <div class="timeline-number">1</div>
+            <h4>Data Collection</h4>
+            <p>Historical OHLCV data (Open, High, Low, Close, Volume) is fetched for selected stock symbols from reliable market data sources.</p>
+          </div>
+          <div class="timeline-item fade-in">
+            <div class="timeline-number">2</div>
+            <h4>Feature Engineering</h4>
+            <p>Raw prices are transformed into features like moving averages, percentage changes, and normalized values that models can learn from.</p>
+          </div>
+          <div class="timeline-item fade-in">
+            <div class="timeline-number">3</div>
+            <h4>Model Training</h4>
+            <p>Both Linear Regression and LSTM models are trained on historical data, learning to map features to future price movements.</p>
+          </div>
+          <div class="timeline-item fade-in">
+            <div class="timeline-number">4</div>
+            <h4>Prediction Generation</h4>
+            <p>Trained models receive recent data as input and output predicted prices for the specified forecast period.</p>
+          </div>
+          <div class="timeline-item fade-in">
+            <div class="timeline-number">5</div>
+            <h4>Visualization & Metrics</h4>
+            <p>Predictions are plotted against actual prices with error metrics (MAE, RMSE) to help you evaluate model performance.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Use Cases -->
+    <section class="use-cases-section section">
+      <div class="container">
+        <div class="section-header fade-in">
+          <h2>Who Uses StockVision?</h2>
+          <p>Built for learning and exploration across different backgrounds.</p>
+        </div>
+        
+        <div class="use-cases-grid">
+          <div class="card use-case-card fade-in">
+            <div class="use-case-icon">🎓</div>
+            <h3>Students</h3>
+            <p>Perfect for B.Tech, M.Tech, or data science students working on ML projects. See theory come to life with real stock data.</p>
+          </div>
+          <div class="card use-case-card fade-in">
+            <div class="use-case-icon">🔬</div>
+            <h3>Researchers</h3>
+            <p>Prototype ideas quickly, compare baseline models, and understand time series behavior before diving into advanced methods.</p>
+          </div>
+          <div class="card use-case-card fade-in">
+            <div class="use-case-icon">💡</div>
+            <h3>Curious Minds</h3>
+            <p>Anyone interested in how AI approaches stock prediction can explore without writing code or risking real money.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <span>📊</span>
+          <span>StockVision</span>
+        </div>
+        <p class="footer-copyright">© 2024 StockVision. All rights reserved.</p>
+        <p class="footer-disclaimer">
+          StockVision is an educational stock price prediction demo platform. 
+          It is designed for learning purposes only and should not be used for real trading or investment decisions.
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Login to StockVision - Access your stock prediction dashboard.">
+  <title>Login - StockVision</title>
+  <link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body data-theme="light">
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="index.html" class="navbar-brand">
+        <span class="navbar-brand-icon">SV</span>
+        <span>StockVision</span>
+      </a>
+      
+      <div class="navbar-menu">
+        <div class="navbar-links">
+          <a href="index.html">Home</a>
+          <a href="about.html">About</a>
+          <a href="user_dashboard.html">Dashboard</a>
+          <a href="contact.html">Contact</a>
+        </div>
+        <div class="navbar-actions">
+          <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
+            <span class="icon-sun">☀️</span>
+            <span class="icon-moon">🌙</span>
+          </button>
+        </div>
+      </div>
+      
+      <button class="navbar-toggle" aria-label="Toggle navigation">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </nav>
+
+  <main class="auth-page">
+    <div class="container">
+      <div class="card auth-card fade-in-up">
+        <div class="auth-header">
+          <h1>Welcome Back</h1>
+          <p>Sign in to access your StockVision dashboard</p>
+        </div>
+        
+        <form class="auth-form" method="POST" action="/login">
+          <div class="form-group">
+            <label class="form-label" for="email">Email Address</label>
+            <input 
+              type="email" 
+              id="email" 
+              name="email" 
+              class="form-input" 
+              placeholder="you@example.com" 
+              required
+              autocomplete="email"
+            >
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label" for="password">Password</label>
+            <input 
+              type="password" 
+              id="password" 
+              name="password" 
+              class="form-input" 
+              placeholder="Enter your password" 
+              required
+              autocomplete="current-password"
+              minlength="6"
+            >
+          </div>
+          
+          <button type="submit" class="btn btn-primary btn-lg">Sign In</button>
+        </form>
+        
+        <div class="auth-footer">
+          <p>New here? <a href="register.html">Create an account</a></p>
+        </div>
+        
+        <div class="auth-disclaimer">
+          By continuing you acknowledge that StockVision is an educational tool 
+          and not a trading platform. Predictions are for learning purposes only.
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <span>📊</span>
+          <span>StockVision</span>
+        </div>
+        <p class="footer-copyright">© 2024 StockVision. All rights reserved.</p>
+        <p class="footer-disclaimer">
+          StockVision is an educational stock price prediction demo platform. 
+          It is designed for learning purposes only and should not be used for real trading or investment decisions.
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/main.js"></script>
+</body>
+</html>

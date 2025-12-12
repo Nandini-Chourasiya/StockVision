@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+
+{% block title %}My Profile - StockVision{% endblock %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+{% endblock %}
+
+{% block content %}
+<main class="dashboard">
+  <div class="container">
+    <div class="dashboard-header fade-in">
+      <h1 class="dashboard-title">My Profile</h1>
+      <p class="dashboard-subtitle">Manage your account settings and preferences.</p>
+    </div>
+
+    <div class="dashboard-panels" style="max-width: 800px; margin: 0 auto;">
+      <!-- Profile Details Card -->
+      <div class="card dashboard-panel panel-full fade-in">
+        <div class="panel-header">
+          <h3 class="panel-title">Account Details</h3>
+        </div>
+        
+        <form action="{{ url_for('auth.profile') }}" method="POST" class="prediction-controls">
+          <div class="form-group">
+            <label class="form-label" for="name">Full Name</label>
+            <input type="text" id="name" name="name" class="form-input" value="{{ current_user.name }}" required>
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label" for="email">Email Address</label>
+            <input type="email" id="email" name="email" class="form-input" value="{{ current_user.email }}" required>
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label" for="phone_number">Phone Number (for SMS Alerts)</label>
+            <input type="tel" id="phone_number" name="phone_number" class="form-input" 
+                   value="{{ current_user.phone_number or '' }}" 
+                   placeholder="+91XXXXXXXXXX" 
+                   pattern="\+[0-9]{10,15}">
+            <p class="text-secondary" style="font-size: 0.8rem; margin-top: 5px;">
+              Use E.164 format (e.g., +919876543210)
+            </p>
+          </div>
+
+          <div class="form-group" style="grid-column: span 2;">
+            <p class="text-secondary" style="font-size: 0.9rem; margin-top: 10px;">
+              Role: <span class="status-badge active">{{ current_user.role|title }}</span>
+            </p>
+          </div>
+
+          <button type="submit" class="btn btn-primary" style="margin-top: 1rem;">
+            Update Profile
+          </button>
+        </form>
+      </div>
+
+      <!-- Alert Preferences Card (Managed via LocalStorage) -->
+      <div class="card dashboard-panel panel-full fade-in" style="margin-top: 2rem;">
+        <div class="panel-header">
+          <h3 class="panel-title">Alert Preferences</h3>
+          <span class="status-badge pending" id="storage-status">Local Storage</span>
+        </div>
+        
+        <div style="padding: 1.5rem;">
+            <p style="margin-bottom: 1rem; color: var(--text-secondary);">
+                These settings are saved in your browser.
+            </p>
+            
+            <div id="active-alerts-list">
+                <!-- Alerts will be populated here by JS -->
+                <p class="text-secondary">No active alerts found.</p>
+            </div>
+            
+            <button id="clear-alerts-btn" class="btn btn-outline btn-sm" style="margin-top: 1rem;">
+                Clear All Alerts
+            </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const alertsList = document.getElementById('active-alerts-list');
+        const clearBtn = document.getElementById('clear-alerts-btn');
+        
+        function renderAlerts() {
+            const alerts = JSON.parse(localStorage.getItem('stockVisionAlerts') || '[]');
+            
+            if (alerts.length === 0) {
+                alertsList.innerHTML = '<p class="text-secondary">No active alerts found.</p>';
+                return;
+            }
+            
+            let html = '<ul style="list-style: none; padding: 0;">';
+            alerts.forEach((alert, index) => {
+                html += `
+                    <li style="padding: 10px; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center;">
+                        <span>
+                            <strong>${alert.symbol}</strong>: 
+                            High > ₹${alert.high} | Low < ₹${alert.low}
+                        </span>
+                        <button onclick="removeAlert(${index})" class="btn btn-text" style="color: var(--danger-color);">✕</button>
+                    </li>
+                `;
+            });
+            html += '</ul>';
+            alertsList.innerHTML = html;
+        }
+        
+        window.removeAlert = function(index) {
+            const alerts = JSON.parse(localStorage.getItem('stockVisionAlerts') || '[]');
+            alerts.splice(index, 1);
+            localStorage.setItem('stockVisionAlerts', JSON.stringify(alerts));
+            renderAlerts();
+            alert('Alert removed.');
+        };
+        
+        clearBtn.addEventListener('click', function() {
+            if(confirm('Are you sure you want to clear all price alerts?')) {
+                localStorage.removeItem('stockVisionAlerts');
+                renderAlerts();
+            }
+        });
+        
+        renderAlerts();
+    });
+</script>
+{% endblock %}

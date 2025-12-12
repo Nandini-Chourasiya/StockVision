@@ -1,0 +1,230 @@
+{% extends "base.html" %}
+
+{% block description %}StockVision User Dashboard - Run predictions and analyze stock trends.{% endblock %}
+{% block title %}Dashboard - StockVision{% endblock %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+{% endblock %}
+
+{% block head_scripts %}
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% endblock %}
+
+{% block content %}
+<main class="dashboard">
+  <div class="container">
+    <!-- Dashboard Header -->
+    <div class="dashboard-header fade-in">
+      <h1 class="dashboard-title">Your StockVision Dashboard</h1>
+      <p class="dashboard-subtitle">Welcome back, <strong>{{ current_user.name }}</strong>! Ready to explore predictions?</p>
+    </div>
+
+    <!-- Metrics Grid -->
+    <div class="metrics-grid">
+      <div class="card metric-card fade-in">
+        <div class="metric-icon blue">📊</div>
+        <div class="metric-content">
+          <div class="metric-value" data-counter="{{ total_predictions }}">{{ total_predictions }}</div>
+          <div class="metric-label">Total Predictions</div>
+        </div>
+      </div>
+      <div class="card metric-card fade-in">
+        <div class="metric-icon green">📈</div>
+        <div class="metric-content">
+          <div class="metric-value">{{ last_stock }}</div>
+          <div class="metric-label">Last Used Stock</div>
+        </div>
+      </div>
+      <div class="card metric-card fade-in">
+        <div class="metric-icon purple">🕐</div>
+        <div class="metric-content">
+          <div class="metric-value">Today</div>
+          <div class="metric-label">Last Login</div>
+        </div>
+      </div>
+      <div class="card metric-card fade-in">
+        <div class="metric-icon orange">🎯</div>
+        <div class="metric-content">
+          <div class="metric-value">{{ avg_confidence_label }}</div>
+          <div class="metric-label">Avg Confidence</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Prediction Controls -->
+    <div class="dashboard-panels">
+      <div class="card dashboard-panel panel-full fade-in">
+        <div class="panel-header">
+          <h3 class="panel-title">Run Prediction</h3>
+        </div>
+        <form id="prediction-form" class="prediction-controls">
+          <div class="form-group">
+            <label class="form-label" for="stock-select">Stock Symbol</label>
+            <!-- Searchable Input with Datalist -->
+            <input type="text" id="stock-select" name="symbol" list="stock-options" class="form-input" placeholder="Search or type any symbol (e.g. ZOMATO.NS)" required autocomplete="off">
+            <datalist id="stock-options">
+              {% for sector, sector_stocks in stocks_by_sector.items() %}
+                  {% for stock in sector_stocks %}
+                    <option value="{{ stock.symbol }}">{{ stock.name }} ({{ sector }})</option>
+                  {% endfor %}
+              {% endfor %}
+            </datalist>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="start-date">Start Date</label>
+            <input type="date" id="start-date" name="start_date" class="form-input" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="end-date">End Date</label>
+            <input type="date" id="end-date" name="end_date" class="form-input" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Model Type</label>
+            <div class="form-radio-group">
+              <label class="form-radio">
+                <input type="radio" name="model" value="linear" checked>
+                <span>Linear Regression</span>
+              </label>
+              <label class="form-radio">
+                <input type="radio" name="model" value="lstm">
+                <span>LSTM</span>
+              </label>
+              <label class="form-radio">
+                <input type="radio" name="model" value="both">
+                <span>Both</span>
+              </label>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary btn-lg" style="grid-column: span 4; margin-top: 1rem;">
+            Run Prediction
+          </button>
+        </form>
+      </div>
+    </div>
+    
+    <!-- Price Alerts Section -->
+    <div class="dashboard-panels">
+      <div class="card dashboard-panel panel-full fade-in">
+        <div class="panel-header">
+          <h3 class="panel-title">Price Alerts</h3>
+          <span class="status-badge" id="notification-status">Notifications Disabled</span>
+        </div>
+        <div class="alert-controls-wrapper" style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+            <!-- Alert Form -->
+            <form id="alert-form" class="prediction-controls">
+              <div class="form-group">
+                <label class="form-label" for="alert-stock-select">Stock Symbol</label>
+                <!-- Searchable Input for Alerts -->
+                <input type="text" id="alert-stock-select" list="stock-options" class="form-input" placeholder="Search or type symbol" required autocomplete="off">
+              </div>
+              
+              <div class="form-group">
+                <label class="form-label" for="alert-high">High Price (₹)</label>
+                <input type="number" id="alert-high" class="form-input" placeholder="e.g. 3500" step="0.01">
+              </div>
+              
+              <div class="form-group">
+                <label class="form-label" for="alert-low">Low Price (₹)</label>
+                <input type="number" id="alert-low" class="form-input" placeholder="e.g. 2800" step="0.01">
+              </div>
+    
+              <button type="submit" class="btn btn-secondary" style="grid-column: span 2; margin-top: 1rem;">
+                Set Alert
+              </button>
+            </form>
+            
+            <!-- Active Alerts List -->
+            <div class="active-alerts">
+                <h4 style="margin-bottom: 1rem; color: var(--text-primary);">Active Alerts</h4>
+                <div id="dashboard-alerts-list">
+                    <p class="text-secondary">No alerts set.</p>
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Chart Section -->
+    <div class="dashboard-panels">
+      <div class="card dashboard-panel panel-full fade-in">
+        <div class="panel-header">
+          <h3 class="panel-title">Price Chart</h3>
+          <span class="status-badge active">Live Preview</span>
+        </div>
+        <div class="chart-container">
+          <canvas id="priceChart"></canvas>
+        </div>
+        
+        <!-- Metrics Summary -->
+          <div class="metrics-summary">
+            <div class="summary-item">
+              <div class="summary-value" id="metric-mae">{{ last_prediction.mae|round(2) if last_prediction else '-' }}</div>
+              <div class="summary-label">MAE</div>
+            </div>
+            <div class="summary-item">
+              <div class="summary-value" id="metric-rmse">{{ last_prediction.rmse|round(2) if last_prediction else '-' }}</div>
+              <div class="summary-label">RMSE</div>
+            </div>
+            <div class="summary-item {{ 'positive' if last_prediction and last_prediction.trend == 'bullish' else 'negative' if last_prediction and last_prediction.trend == 'bearish' else '' }}">
+              <div class="summary-value" id="metric-trend">{{ get_trend_label(last_prediction.trend) if last_prediction else '-' }}</div>
+              <div class="summary-label">Trend</div>
+            </div>
+            <div class="summary-item">
+              <div class="summary-value" id="metric-confidence">{{ get_confidence_label(last_prediction.confidence_level) if last_prediction else '-' }}</div>
+              <div class="summary-label">Confidence</div>
+            </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Recent Predictions Table -->
+    <div class="dashboard-panels">
+      <div class="card dashboard-panel panel-full fade-in">
+        <div class="panel-header">
+          <h3 class="panel-title">Recent Predictions</h3>
+        </div>
+        <div style="overflow-x: auto;">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Stock</th>
+                <th>Model</th>
+                <th>Horizon</th>
+                <th>Trend</th>
+                <th>Confidence</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for pred in recent_predictions %}
+              <tr>
+                <td>{{ pred.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                <td>{{ pred.stock.symbol }}</td>
+                <td>{{ pred.model_used }}</td>
+                <td>{{ pred.horizon_days }} days</td>
+                <td>
+                  <span class="status-badge {{ 'active' if pred.trend == 'bullish' else 'inactive' if pred.trend == 'bearish' else 'pending' }}">
+                    {{ get_trend_label(pred.trend) }}
+                  </span>
+                </td>
+                <td>{{ get_confidence_label(pred.confidence_level) }}</td>
+              </tr>
+              {% else %}
+              <tr>
+                <td colspan="6" style="text-align: center;">No predictions yet. Run your first one!</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    
+  </div>
+</main>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/user_dashboard.js') }}"></script>
+{% endblock %}
