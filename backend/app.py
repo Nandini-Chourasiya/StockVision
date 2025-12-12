@@ -45,6 +45,27 @@ def create_app(config_name='default'):
     def faq():
         return render_template('faq.html')
     
+    # Health check / diagnostic route
+    @app.route('/health')
+    def health():
+        from models import User, Stock
+        try:
+            user_count = User.query.count()
+            stock_count = Stock.query.count()
+            return jsonify({
+                'status': 'ok',
+                'database': 'connected',
+                'users': user_count,
+                'stocks': stock_count
+            })
+        except Exception as e:
+            import traceback
+            return jsonify({
+                'status': 'error',
+                'message': str(e),
+                'traceback': traceback.format_exc()
+            }), 500
+    
     # Serve Service Worker from root (required for push notifications scope)
     @app.route('/sw.js')
     def service_worker():
