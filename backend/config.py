@@ -1,5 +1,6 @@
 """
 StockVision - Flask Configuration
+[Deployment: v1.1 - Session fix applied]
 """
 import os
 
