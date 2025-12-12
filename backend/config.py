@@ -25,7 +25,7 @@ class Config:
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     
     # Session configuration
-    SESSION_TYPE = 'filesystem'
+    # SESSION_TYPE = 'filesystem'  # Disabled for cloud deployment (Render has ephemeral storage)
     PERMANENT_SESSION_LIFETIME = 86400  # 24 hours
     
     # Static files - point to existing assets folder
