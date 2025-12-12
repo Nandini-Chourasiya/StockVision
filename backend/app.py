@@ -56,8 +56,15 @@ def create_app(config_name='default'):
         return render_template('error.html', error_code=404, message="Page not found"), 404
         
     @app.errorhandler(500)
+    @app.errorhandler(500)
     def internal_server_error(e):
-        return render_template('error.html', error_code=500, message="Internal server error"), 500
+        import traceback
+        # In production, we usually hide this, but for this specific debugging session we expose it.
+        return render_template('error.html', 
+            error_code=500, 
+            message="Internal server error",
+            detail=traceback.format_exc()
+        ), 500
     
     return app
 
