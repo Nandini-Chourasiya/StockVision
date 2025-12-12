@@ -26,6 +26,15 @@ def login_required(f):
         if 'user_id' not in session:
             flash('Please log in to access this page.', 'warning')
             return redirect(url_for('auth.login', next=request.url))
+        
+        # Verify user still exists in DB (handle DB resets/invalid sessions)
+        from models import User
+        user = User.query.get(session['user_id'])
+        if not user:
+            session.clear()
+            flash('Session expired. Please log in again.', 'warning')
+            return redirect(url_for('auth.login', next=request.url))
+            
         return f(*args, **kwargs)
     return decorated_function
 
