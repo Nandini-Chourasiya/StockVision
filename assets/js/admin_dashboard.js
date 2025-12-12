@@ -200,13 +200,18 @@
     function generateSignupsData() {
         const labels = [];
         const values = [];
-        const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-        const currentMonth = new Date().getMonth();
+        const today = new Date();
+        const currentDay = today.getDate();
 
-        for (let i = 5; i >= 0; i--) {
-            const monthIdx = (currentMonth - i + 12) % 12;
-            labels.push(months[monthIdx]);
-            values.push(Math.floor(Math.random() * 30) + 5);
+        // Only show days from December 2025 (current month)
+        for (let day = 1; day <= currentDay; day++) {
+            labels.push(`Dec ${day}`);
+            // Show 0 for most days, with actual signups only on recent days
+            if (day >= 10) {
+                values.push(Math.floor(Math.random() * 5) + 1);
+            } else {
+                values.push(0);
+            }
         }
 
         return { labels, values };
