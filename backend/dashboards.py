@@ -22,59 +22,67 @@ dashboards_bp = Blueprint('dashboards', __name__)
 @login_required
 def user_dashboard():
     """User dashboard page"""
-    user = get_current_user()
-    
-    # Get user statistics
-    total_predictions = Prediction.query.filter_by(user_id=user.id).count()
-    
-    # Get last prediction
-    last_prediction = Prediction.query \
-        .filter_by(user_id=user.id) \
-        .order_by(Prediction.created_at.desc()) \
-        .first()
-    
-    last_stock = last_prediction.stock.symbol if last_prediction and last_prediction.stock else 'N/A'
-    
-    # Get recent predictions for table
-    recent_predictions = Prediction.query \
-        .filter_by(user_id=user.id) \
-        .order_by(Prediction.created_at.desc()) \
-        .limit(10) \
-        .all()
-    
-    # Calculate average confidence
-    avg_confidence = db.session.query(func.avg(Prediction.confidence_level)) \
-        .filter_by(user_id=user.id) \
-        .scalar()
-    
-    if avg_confidence:
-        avg_confidence_label = get_confidence_label(avg_confidence)
-    else:
-        avg_confidence_label = 'N/A'
-    
-    # Get all stocks for dropdown
-    stocks = Stock.query.order_by(Stock.symbol).all()
-    
-    # Group stocks by sector for dropdown
-    stocks_by_sector = {}
-    for stock in stocks:
-        sector = stock.sector or 'Other'
-        if sector not in stocks_by_sector:
-            stocks_by_sector[sector] = []
-        stocks_by_sector[sector].append(stock)
-    
-    return render_template('user_dashboard.html',
-        user=user,
-        total_predictions=total_predictions,
-        last_prediction=last_prediction,
-        last_stock=last_stock,
-        avg_confidence_label=avg_confidence_label,
-        recent_predictions=recent_predictions,
-        stocks=stocks,
-        stocks_by_sector=stocks_by_sector,
-        get_trend_label=get_trend_label,
-        get_confidence_label=get_confidence_label
-    )
+    try:
+        user = get_current_user()
+        
+        # Get user statistics
+        total_predictions = Prediction.query.filter_by(user_id=user.id).count()
+        
+        # Get last prediction
+        last_prediction = Prediction.query \
+            .filter_by(user_id=user.id) \
+            .order_by(Prediction.created_at.desc()) \
+            .first()
+        
+        last_stock = last_prediction.stock.symbol if last_prediction and last_prediction.stock else 'N/A'
+        
+        # Get recent predictions for table
+        recent_predictions = Prediction.query \
+            .filter_by(user_id=user.id) \
+            .order_by(Prediction.created_at.desc()) \
+            .limit(10) \
+            .all()
+        
+        # Calculate average confidence
+        avg_confidence = db.session.query(func.avg(Prediction.confidence_level)) \
+            .filter_by(user_id=user.id) \
+            .scalar()
+        
+        if avg_confidence:
+            avg_confidence_label = get_confidence_label(avg_confidence)
+        else:
+            avg_confidence_label = 'N/A'
+        
+        # Get all stocks for dropdown
+        stocks = Stock.query.order_by(Stock.symbol).all()
+        
+        # Group stocks by sector for dropdown
+        stocks_by_sector = {}
+        for stock in stocks:
+            sector = stock.sector or 'Other'
+            if sector not in stocks_by_sector:
+                stocks_by_sector[sector] = []
+            stocks_by_sector[sector].append(stock)
+        
+        return render_template('user_dashboard.html',
+            user=user,
+            total_predictions=total_predictions,
+            last_prediction=last_prediction,
+            last_stock=last_stock,
+            avg_confidence_label=avg_confidence_label,
+            recent_predictions=recent_predictions,
+            stocks=stocks,
+            stocks_by_sector=stocks_by_sector,
+            get_trend_label=get_trend_label,
+            get_confidence_label=get_confidence_label
+        )
+    except Exception as e:
+        import traceback
+        return render_template('error.html', 
+            error_code=500, 
+            message=f"Dashboard Error: {str(e)}",
+            detail=traceback.format_exc()
+        ), 500
 
 
 # ============================================

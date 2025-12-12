@@ -8,9 +8,12 @@
     <div style="text-align: center; padding: 4rem 0;">
       <h1 style="font-size: 4rem; margin-bottom: 1rem; color: var(--primary);">{{ error_code }}</h1>
       <h2 style="margin-bottom: 1.5rem;">Oops! {{ message }}</h2>
-      <p style="margin-bottom: 2rem; color: var(--text-muted);">
-        The page you are looking for might have been removed or is temporarily unavailable.
-      </p>
+      <p class="error-message">{{ message }}</p>
+      {% if detail %}
+        <div style="text-align: left; background: #f8f9fa; padding: 1rem; border-radius: 8px; margin-top: 1rem; overflow-x: auto;">
+            <pre style="color: #d32f2f; font-size: 0.85rem; white-space: pre-wrap;">{{ detail }}</pre>
+        </div>
+      {% endif %}
       <a href="{{ url_for('landing') }}" class="btn btn-primary">Return Home</a>
     </div>
   </div>
