@@ -25,8 +25,8 @@ class Config:
     
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     
-    # Session configuration
-    # SESSION_TYPE = 'filesystem'  # Disabled for cloud deployment (Render has ephemeral storage)
+    # Session configuration - Use default cookie-based sessions
+    SESSION_TYPE = None  # Explicitly disable Flask-Session extension (use default signed cookies)
     PERMANENT_SESSION_LIFETIME = 86400  # 24 hours
     
     # Static files - point to existing assets folder
