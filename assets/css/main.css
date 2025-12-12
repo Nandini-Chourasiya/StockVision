@@ -1015,10 +1015,18 @@ p {
     justify-content: center;
 }
 
+.auth-page .container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
 .auth-card {
     width: 100%;
     max-width: 440px;
     padding: var(--space-2xl);
+    margin: 0 auto;
 }
 
 .auth-header {
